@@ -1,44 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Weather App</title>
-        <style type="text/css">
-            html {
-                height: 100%;
-            }
-            body {
-                height: 100%;
-                margin: 0;
-                background: #0a1f44;
-                display: flex;
-                align-items: center;
-                text-align: center;
-                justify-content: center;
-            }
-        
-            .city {
-                align-items: center;
-                width: 80%;
-                display: flex;
-                justify-content: center;
-                flex-direction: column;
-                padding: 40px 8%;
-                border-radius: 20px;
-                background: #fff;
-            }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-            .city-name {
-                font-size: 2em;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="city">
-            <h2 class="city-name">
-                <span>Please go online to check the current weather.</span>
-            </h2>
-        </div>
-    </body>
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .city {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 40px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .city:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .city-name span {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #f9f9f9;
+    }
+
+    .offline-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+  <div class="city">
+    <div class="offline-icon">🌐🚫</div>
+    <h2 class="city-name">
+      <span>Please go online to check the current weather.</span>
+    </h2>
+  </div>
+</body>
 </html>
