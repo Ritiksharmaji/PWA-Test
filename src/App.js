@@ -62,6 +62,7 @@ export default function App() {
     };
 
     return (
+       <>
         <div className="main-container">
             <input
                 type="text"
@@ -93,11 +94,14 @@ export default function App() {
                 </div>
             )}
 
-            <p>This is for version check with notification</p>
-            <p>This is for second time version check with notification</p>
-            <p>This is for third time version check with notification</p>
+            
 
             <footer className="app-version">Version: {APP_VERSION}</footer>
         </div>
+        <div>
+            <h1>this is somthing new !!!</h1>
+            <p>version updated fifth time!!</p>
+        </div>
+       </>
     );
 }
