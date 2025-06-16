@@ -77,6 +77,8 @@ const showUpdateNotification = () => {
                 </div>
             )}
             <p>this is for version check with notification</p>
+            <p>this is for second time version check with notification</p>
+            
 
             <footer className="app-version">Version: {APP_VERSION}</footer>
         </div>
