@@ -50,18 +50,36 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Activate the SW
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [];
-    cacheWhitelist.push(CACHE_NAME);
+// self.addEventListener('activate', (event) => {
+//     const cacheWhitelist = [];
+//     cacheWhitelist.push(CACHE_NAME);
 
-    event.waitUntil(
-        caches.keys().then((cacheNames) => Promise.all(
-            cacheNames.map((cacheName) => {
-                if(!cacheWhitelist.includes(cacheName)) {
-                    return caches.delete(cacheName);
-                }
-            })
-        ))
+//     event.waitUntil(
+//         caches.keys().then((cacheNames) => Promise.all(
+//             cacheNames.map((cacheName) => {
+//                 if(!cacheWhitelist.includes(cacheName)) {
+//                     return caches.delete(cacheName);
+//                 }
+//             })
+//         ))
             
-    )
+//     )
+// });
+
+self.addEventListener("activate", (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) =>
+            Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            )
+        )
+    );
+    self.clients.claim(); // take control of clients right away
 });
+
+// adding for notification
+self.addEventListener("install", () => self.skipWaiting()); // activate new SW immediately
