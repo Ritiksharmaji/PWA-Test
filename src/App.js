@@ -7,25 +7,32 @@ export default function App() {
     const [query, setQuery] = useState('');
     const [weather, setWeather] = useState({});
 
-
     useEffect(() => {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistration().then((registration) => {
-            if (registration && registration.waiting) {
-                showUpdateNotification(); // Already waiting
-            }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistration().then((registration) => {
+                if (registration && registration.waiting) {
+                    notifyUserOfUpdate(); // Already waiting
+                }
 
-            registration && registration.addEventListener('updatefound', () => {
-                const newWorker = registration.installing;
-                newWorker && newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        showUpdateNotification(); // New update ready
-                    }
+                registration?.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker?.addEventListener('statechange', () => {
+                        if (
+                            newWorker.state === 'installed' &&
+                            navigator.serviceWorker.controller
+                        ) {
+                            notifyUserOfUpdate(); // New update installed and ready
+                        }
+                    });
                 });
             });
-        });
-    }
-}, []);
+        }
+
+        // Ask for notification permission
+        if ("Notification" in window && Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    }, []);
 
     const search = async (e) => {
         if (e.key === 'Enter') {
@@ -35,13 +42,24 @@ export default function App() {
         }
     };
 
-    
-const showUpdateNotification = () => {
-    const confirmUpdate = window.confirm("🚀 A new version is available. Do you want to update?");
-    if (confirmUpdate) {
-        window.location.reload(true); // Reload and activate new service worker
-    }
-};
+    const notifyUserOfUpdate = () => {
+        // Native browser notification (optional)
+        if (Notification.permission === "granted") {
+            navigator.serviceWorker.getRegistration().then((reg) => {
+                reg?.showNotification("🔄 Update Available", {
+                    body: "A new version of the Weather App is ready. Click OK to update.",
+                    icon: "./images/logo.png",
+                    badge: "./images/logo.png"
+                });
+            });
+        }
+
+        // In-app confirmation
+        const confirmUpdate = window.confirm("🚀 A new version is available. Do you want to update?");
+        if (confirmUpdate) {
+            window.location.reload(true); // Force reload to activate new service worker
+        }
+    };
 
     return (
         <div className="main-container">
@@ -71,14 +89,13 @@ const showUpdateNotification = () => {
                             alt={weather.weather[0].description}
                         />
                         <p>{weather.weather[0].description}</p>
-                        
                     </div>
-                    
                 </div>
             )}
-            <p>this is for version check with notification</p>
-            <p>this is for second time version check with notification</p>
-            
+
+            <p>This is for version check with notification</p>
+            <p>This is for second time version check with notification</p>
+            <p>This is for third time version check with notification</p>
 
             <footer className="app-version">Version: {APP_VERSION}</footer>
         </div>

@@ -66,20 +66,32 @@ self.addEventListener('fetch', (event) => {
 //     )
 // });
 
-self.addEventListener("activate", (event) => {
+self.addEventListener("activate", async (event) => {
+    const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
         caches.keys().then((cacheNames) =>
             Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
+                    if (!cacheWhitelist.includes(cacheName)) {
                         return caches.delete(cacheName);
                     }
                 })
             )
         )
     );
-    self.clients.claim(); // take control of clients right away
+
+    self.clients.claim();
+
+    // 🔔 Send notification to user about update
+    if (Notification.permission === "granted") {
+        self.registration.showNotification("🔄 Update Available", {
+            body: "A new version of the Weather App is ready. Open the app to refresh.",
+            icon: "./images/logo.png",
+            badge: "./images/logo.png",
+        });
+    }
 });
+
 
 // adding for notification
 self.addEventListener("install", () => self.skipWaiting()); // activate new SW immediately
